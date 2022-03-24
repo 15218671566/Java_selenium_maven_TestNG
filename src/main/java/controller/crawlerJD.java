@@ -84,17 +84,14 @@ public class crawlerJD {
         //定位文字
         List<WebElement> text = driver.findElements(By.cssSelector("ul > li> div > div.p-name.p-name-type-2 > a > em"));
         logger.info("手机个数：" + text.size());
-        List<WebElement> img = driver.findElements(By.cssSelector("img"));
-
-        //List<WebElement> img = driver.findElements(By.cssSelector("ul > li > div > div.p-img > a > img"));
+        List<WebElement> img = driver.findElements(By.cssSelector("ul > li > div > div.p-img > a > img"));
         logger.info("手机图片个数："+img.size());
         System.out.println();
 
         if (text.size() != 0 && img.size() != 0) {
             for (int a = 0; a < text.size(); a++) {
 
-                //String name = text.get(a).getText();
-                String name = a+"";
+                String name = text.get(a).getText();
                 System.out.println(name);
                 String src = img.get(a).getAttribute("src");
                 System.out.println(src);
