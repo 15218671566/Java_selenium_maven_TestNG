@@ -6,37 +6,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.net.URLConnection;
 
-
+//爬取京东手机图片及文字
 public class crawlerJD {
 
 
     autopulic au = new autopulic();
     //打印日志
     private static Logger logger = Logger.getLogger(crawlerJD.class);
-    /*新建驱动并屏蔽浏览器通知
-    ChromeOptions chromeOptions = au.enableChrome();
-    WebDriver driver = new ChromeDriver(chromeOptions);*/
 
     WebDriver driver = au.enableChrome2();
-
-    //显示等待20秒
-    WebDriverWait wait = new WebDriverWait(driver, 20);
-    Actions actions = new Actions(driver);
-    Random random = new Random();
     //执行js代码
     JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -59,7 +47,6 @@ public class crawlerJD {
         logger.info("JD手机页面打开成功---------------------");
         au.mandatorySleep(5000);
         js.executeScript("window.scrollTo(0,document.body.scrollHeight)");
-        au.mandatorySleep(5000);
         System.out.println(driver.getPageSource());
 
     }

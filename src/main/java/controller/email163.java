@@ -18,9 +18,6 @@ public class email163 {
     autopulic au = new autopulic();
     //打印日志
     private static Logger logger = Logger.getLogger(email163.class);
-    /*新建驱动并屏蔽浏览器通知
-    ChromeOptions chromeOptions = au.enableChrome();
-    WebDriver driver = new ChromeDriver(chromeOptions);*/
 
     WebDriver driver = au.enableChrome2();
 
@@ -83,19 +80,13 @@ public class email163 {
 
         //尝试点击
         au.showWait(wait,driver.findElement(By.className("nui-editableAddr-ipt")),js);
-        //wait.until(ExpectedConditions.elementToBeClickable(By.className("nui-editableAddr-ipt"))).click();
         driver.findElement(By.className("nui-editableAddr-ipt")).sendKeys("zxczxczxc");
         System.out.println("发送邮箱定位成功");
         driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).click();
         driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).sendKeys("存草稿");
         System.out.println("主题定位成功");
 
-        /*String text = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[1]/section/section/div/div[1]/div[3]/div/div")).getText();
-        if (text.equals("点击“英文智能检查”，可开启英文自动检查和纠错功能，省时高效")) {
-            driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[1]/section/section/div/div[1]/div[3]/span/b")).click();
-            System.out.println("关闭文字提示成功");
 
-        }*/
         driver.switchTo().frame(driver.findElement(By.className("APP-editor-iframe")));
         System.out.println("进入iframe");
         driver.findElement(By.className("nui-scroll")).click();
@@ -162,18 +153,12 @@ public class email163 {
 
         //尝试点击
         au.showWait(wait,driver.findElement(By.className("nui-editableAddr-ipt")),js);
-        driver.findElement(By.className("nui-editableAddr-ipt")).sendKeys("1259375229@qq.com");
+        driver.findElement(By.className("nui-editableAddr-ipt")).sendKeys("接受邮件邮箱");
         System.out.println("发送邮箱定位成功");
         driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).click();
         driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).sendKeys("兄弟，你好呀111");
         System.out.println("主题定位成功");
 
-        /*String text = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[1]/section/section/div/div[1]/div[3]/div/div")).getText();
-        if (text.equals("点击“英文智能检查”，可开启英文自动检查和纠错功能，省时高效")) {
-            driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[1]/section/section/div/div[1]/div[3]/span/b")).click();
-            System.out.println("关闭文字提示成功");
-
-        }*/
         driver.switchTo().frame(driver.findElement(By.className("APP-editor-iframe")));
         System.out.println("进入iframe");
         driver.findElement(By.className("nui-scroll")).click();

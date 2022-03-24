@@ -28,10 +28,10 @@ public class autopulic {
     public void login(WebDriver driver){
         driver.switchTo().frame(driver.findElement(By.xpath("/html/body/div[2]/div[3]/div[1]/div/div[4]/div[1]/div[1]/iframe")));
         driver.findElement(By.name("email")).clear();
-        driver.findElement(By.name("email")).sendKeys("15218671566");
+        driver.findElement(By.name("email")).sendKeys("163邮箱账号");
 
         driver.findElement(By.name("password")).clear();
-        driver.findElement(By.name("password")).sendKeys("asd5325608");
+        driver.findElement(By.name("password")).sendKeys("163邮箱密码");
 
 
         driver.findElement(By.id("dologin")).click();
@@ -74,50 +74,23 @@ public class autopulic {
     }
 
 
-    //禁止浏览器弹窗提醒
-    public ChromeOptions enableChrome(){
-        // 创建HashMap类的一个对象
-        Map<String, Object> prefs = new HashMap<String, Object>();
-        // 设置提醒的设置，2表示block
-        prefs.put("profile.default_content_setting_values.notifications", 2);
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("prefs", prefs);
-        return options;
-        //在 Chrome driver传入options设置
-    }
 
-
+    //屏蔽chrome弹窗提醒
     public WebDriver enableChrome2(){
-        // 创建HashMap类的一个对象
         Map<String, Object> prefs = new HashMap<String, Object>();
-        // 设置提醒的设置，2表示block
         prefs.put("profile.default_content_setting_values.notifications", 2);
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
         driver = new ChromeDriver(options);
         return driver;
-        //在 Chrome driver传入options设置
     }
 
     //切换窗口
     public void switchLastHandle(WebDriver driver) {
-        //获取当前打开窗口的所有句柄
         Set<String> allHandles = driver.getWindowHandles();
         ArrayList<String> lst = new ArrayList(allHandles);
         String handle = lst.get(lst.size() - 1);
         driver.switchTo().window(handle);
     }
 
-    public WebElement getElement(long timeOutInSecond, By by) {
-        WebDriverWait wait = new WebDriverWait(driver, timeOutInSecond);
-        WebElement element = wait.until(new ExpectedCondition<WebElement>() {
-            @NullableDecl
-            @Override
-            public WebElement apply(@NullableDecl WebDriver webDriver) {
-                return webDriver.findElement(by);
-            }
-        });
-
-        return element;
-    }
 }

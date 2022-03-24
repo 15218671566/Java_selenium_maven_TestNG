@@ -21,6 +21,11 @@ public class ignoreLogin {
 
     }
 
+    @AfterClass
+    public void afterClass() {
+        driver.quit();
+    }
+
     @Test
     public void testLoginWithCookie() {
         driver.get("https://mail.163.com/");
@@ -28,35 +33,29 @@ public class ignoreLogin {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 
-        //cookie遍历使用
         Set<Cookie> cookies = driver.manage().getCookies();
         for (Cookie cookie : cookies) {
             Cookie c1 = new Cookie(cookie.getName(), cookie.getValue());
             driver.manage().addCookie(c1);
             System.out.println(cookie.getName() + "\t" + cookie.getValue());
         }
-        //添加cookie操作
-        /*Cookie cookie1 = new Cookie("key", "value");
+        Cookie cookie1 = new Cookie("", "");
         driver.manage().addCookie(cookie1);
-        Cookie cookie2 = new Cookie(".key", "value");
+        Cookie cookie2 = new Cookie(".", "");
         driver.manage().addCookie(cookie2);
-        Cookie cookie3 = new Cookie("key", "value");
-        driver.manage().addCookie(cookie3);*/
+        Cookie cookie3 = new Cookie("", "");
+        driver.manage().addCookie(cookie3);
         driver.manage().window().maximize();
-        //下面是见证奇迹的时候了
         autopulic au = new autopulic();
         au.mandatorySleep(5000);
         driver.navigate().refresh();
         Set<Cookie> cookies1 = driver.manage().getCookies();
         for (Cookie cookie8 : cookies1) {
-            System.out.println(cookie8.getName() + "----------------" + cookie8.getValue());
+            System.out.println("cookie："+cookie8.getName() + "-------" + cookie8.getValue());
         }
         au.mandatorySleep(5000);
 
     }
 
-    @AfterClass
-    public void afterClass() {
-        driver.quit();
-    }
+
 }
