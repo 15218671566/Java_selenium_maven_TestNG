@@ -1,8 +1,6 @@
 package controller;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -54,8 +52,7 @@ public class email163 {
     @Test(priority = 1, description = "删除草稿箱邮件", enabled = true)
     public void delete1() {
         //尝试点击
-        au.showWait(wait,driver.findElement(By.cssSelector("ul.js-component-tree.nui-tree > li:nth-child(6) > div")),js);
-
+        au.getElementClick(wait,By.cssSelector("ul.js-component-tree.nui-tree > li:nth-child(6) > div"),js);
         //定位邮件
         int ck0 = driver.findElements(By.className("ck0")).size() - 1;
         logger.info("草稿箱邮件数：" + ck0);
@@ -72,54 +69,16 @@ public class email163 {
     public void save() {
 
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
-        //尝试点击
-        au.showWait(wait,driver.findElement(By.id("_mail_tabitem_0_133")),js);
-        //wait.until(ExpectedConditions.elementToBeClickable(By.id("_mail_tabitem_0_133"))).click();
-        driver.findElement(By.xpath("/html/body/div[1]/nav/div[1]/ul/li[2]")).click();
-        System.out.println("写信定位成功");
 
-        //尝试点击
-        au.showWait(wait,driver.findElement(By.className("nui-editableAddr-ipt")),js);
-        driver.findElement(By.className("nui-editableAddr-ipt")).sendKeys("zxczxczxc");
-        System.out.println("发送邮箱定位成功");
-        driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).click();
-        driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).sendKeys("存草稿");
-        System.out.println("主题定位成功");
+        au.mail(wait,js);
 
+        //草稿箱
+        List<WebElement> box = driver.findElements(By.cssSelector("div.js-component-toolbar.nui-toolbar > div:nth-child(3) > div"));
+        box.get(box.size()-1).click();
 
-        driver.switchTo().frame(driver.findElement(By.className("APP-editor-iframe")));
-        System.out.println("进入iframe");
-        driver.findElement(By.className("nui-scroll")).click();
-        driver.findElement(By.className("nui-scroll")).sendKeys("Liujx一定可以的111存草稿");
-        driver.switchTo().defaultContent();
-        System.out.println("退出iframe");
-        List<WebElement> elements = driver.findElements(By.className("nui-btn-text"));
-        int list = elements.size();
-        String text = "存草稿";
-        String check = "";
-        String check2 = "";
-        String text1 = "取 消";
-
-        for (int a = 0; a < list; a++) {
-            check = elements.get(a).getText();
-            logger.info(check);
-            if (text.equals(check)) {
-                elements.get(a).click();
-                logger.info("存草稿已点击----------------");
-                break;
-            }
-        }
-        List<WebElement> elements1 = driver.findElements(By.className("nui-btn-text"));
-        int list1 = elements.size();
-        for (int b = 0; b < list1; b++) {
-            check2 = elements1.get(b).getText();
-            logger.info(check2);
-            if (text1.equals(check2)) {
-                elements1.get(b).click();
-                logger.info("取消按钮已点击------------------------------");
-                break;
-            }
-        }
+        //取消
+        List<WebElement> cancel = driver.findElements(By.cssSelector("div.js-component-toolbar.nui-toolbar > div:nth-child(4) > div"));
+        cancel.get(cancel.size()-1).click();
         logger.info("邮件存草稿操作已完成------------------------------");
     }
 
@@ -129,7 +88,7 @@ public class email163 {
 
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
         //尝试点击
-        au.showWait(wait,driver.findElement(By.cssSelector("ul.js-component-tree.nui-tree > li:nth-child(7) > div[hidefocus='hidefocus']")),js);
+        au.getElementClick(wait,By.cssSelector("ul.js-component-tree.nui-tree > li:nth-child(7) > div[hidefocus='hidefocus']"),js);
 
         //定位已发送邮件
         int ck1 = driver.findElements(By.cssSelector("div.nl0.hA0.ck0")).size() - 1;
@@ -148,25 +107,8 @@ public class email163 {
     @Test(priority = 4, description = "发送邮件", enabled = true)
     public void send() {
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
-        driver.findElement(By.cssSelector("li.js-component-component.ra0.mD0")).click();
-        System.out.println("写信定位成功");
-
-        //尝试点击
-        au.showWait(wait,driver.findElement(By.className("nui-editableAddr-ipt")),js);
-        driver.findElement(By.className("nui-editableAddr-ipt")).sendKeys("接受邮件邮箱");
-        System.out.println("发送邮箱定位成功");
-        driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).click();
-        driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/div[1]/section/header/div[2]/div[1]/div/div/input")).sendKeys("兄弟，你好呀111");
-        System.out.println("主题定位成功");
-
-        driver.switchTo().frame(driver.findElement(By.className("APP-editor-iframe")));
-        System.out.println("进入iframe");
-        driver.findElement(By.className("nui-scroll")).click();
-        driver.findElement(By.className("nui-scroll")).sendKeys("Liujx一定可以的111");
-        driver.switchTo().defaultContent();
-        System.out.println("退出iframe");
-        List<WebElement> list = driver.findElements(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon"));
-        list.get(list.size() - 1).click();
+        au.mail(wait,js);
+        driver.findElement(By.cssSelector("footer.jp0 > div:first-child > span.nui-btn-text")).click();
 
         logger.info("发送邮件操作已完成------------------------------");
     }
@@ -182,13 +124,13 @@ public class email163 {
     @Test(priority = 5, description = "新增联系人(不加分组)")
     public void addName1() {
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
-        //尝试点击
-        au.showWait(wait,driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text")),js);
+
+        By by = By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text");
+        au.getElementClick(wait,by,js);
 
         //再次点击
         driver.navigate().refresh();
         js.executeScript("arguments[0].click()",driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text")));
-        //driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon  > span.nui-btn-text")).click();
 
         //姓名
         WebElement name = driver.findElement(By.id("input_N"));
@@ -242,7 +184,7 @@ public class email163 {
     @Test(priority = 7, description = "新增联系人(需加分组)")
     public void addName2() {
         //尝试点击
-        au.showWait(wait,driver.findElement(By.id("_mail_tabitem_1_134")),js);
+        au.getElementClick(wait,By.id("_mail_tabitem_1_134"),js);
         //wait.until(ExpectedConditions.elementToBeClickable(By.id("_mail_tabitem_1_134"))).click();
         driver.navigate().refresh();
         driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text")).click();
