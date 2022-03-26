@@ -27,10 +27,10 @@ public class autopulic {
     public void login(WebDriver driver){
         driver.switchTo().frame(driver.findElement(By.xpath("/html/body/div[2]/div[3]/div[1]/div/div[4]/div[1]/div[1]/iframe")));
         driver.findElement(By.name("email")).clear();
-        driver.findElement(By.name("email")).sendKeys("15218671566");
+        driver.findElement(By.name("email")).sendKeys("邮箱账号");
 
         driver.findElement(By.name("password")).clear();
-        driver.findElement(By.name("password")).sendKeys("asd5325608");
+        driver.findElement(By.name("password")).sendKeys("邮箱密码");
 
 
         driver.findElement(By.id("dologin")).click();
