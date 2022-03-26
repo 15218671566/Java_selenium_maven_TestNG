@@ -34,7 +34,6 @@ public class autopulic {
 
 
         driver.findElement(By.id("dologin")).click();
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 
     //强制等待
