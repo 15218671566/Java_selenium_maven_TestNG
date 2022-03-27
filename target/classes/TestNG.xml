@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="单元测试报告">
+<suite name="单元测试报告" parallel="classes" thread-count="2">
 
-    <!--    添加html监听，这里指向监听器的包路径-->
+    <!--    指定某个或某些单元测试类运行-->
+    <test verbose="10" preserve-order="true" name="threadTest163">
+        <classes>
+            <class name="controller.email163" />
+        </classes>
+    </test>
+    <test verbose="10" preserve-order="true" name="threadTestTencen">
+        <classes>
+            <class name="controller.Tencen" />
+        </classes>
+    </test>
+
+    <!--    html监听，这里指向监听器的包路径,并生成测试报告-->
     <listeners>
         <listener class-name="listener.TestReportListener"/>
     </listeners>
-
-
-    <!--    指定某个或某些单元测试类运行-->
-    <test verbose="10" preserve-order="true" name="测试登录单元测试">
-        <classes>
-            <class name="controller.email163" />
-            <!--<class name="controller.Tencen" />-->
-        </classes>
-    </test>
 </suite>

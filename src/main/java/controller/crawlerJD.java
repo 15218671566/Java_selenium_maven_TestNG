@@ -13,10 +13,11 @@ import org.testng.annotations.Test;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.net.URLConnection;
 
-//爬取京东手机图片及文字
+//爬取京东图片及文字
 public class crawlerJD {
 
 
@@ -33,11 +34,9 @@ public class crawlerJD {
     @BeforeClass
     public void loginJD() {
 
-
-
         System.setProperty("webserver.chrome.driver", "\\src\\chromedriver.exe");
 
-        driver.get("https://search.jd.com/Search?keyword=%E6%89%8B%E6%9C%BA&enc=utf-8&wq=%E6%89%8B%E6%9C%BA&pvid=9e3b11d8029a4c3cab1e5af15eedfdd9");
+        driver.get("https://search.jd.com/Search?keyword=Java&enc=utf-8&wq=Java&pvid=13c2d73b1f894d4cb90398a72422c951");
         driver.manage().deleteAllCookies();
 
         driver.manage().window().maximize();
@@ -47,7 +46,6 @@ public class crawlerJD {
         logger.info("JD手机页面打开成功---------------------");
         au.mandatorySleep(5000);
         js.executeScript("window.scrollTo(0,document.body.scrollHeight)");
-        System.out.println(driver.getPageSource());
 
     }
 
@@ -68,43 +66,31 @@ public class crawlerJD {
 
         }
 
-        //定位文字
-        List<WebElement> text = driver.findElements(By.cssSelector("ul > li> div > div.p-name.p-name-type-2 > a > em"));
-        logger.info("手机个数：" + text.size());
-        List<WebElement> img = driver.findElements(By.cssSelector("ul > li > div > div.p-img > a > img"));
-        logger.info("手机图片个数："+img.size());
-        System.out.println();
+        WebElement j_goodsList = driver.findElement(By.id("J_goodsList"));
+        List<WebElement> elements = j_goodsList.findElements(By.cssSelector("ul.gl-warp.clearfix > li"));
 
-        if (text.size() != 0 && img.size() != 0) {
-            for (int a = 0; a < text.size(); a++) {
-
-                String name = text.get(a).getText();
-                System.out.println(name);
-                String src = img.get(a).getAttribute("src");
-                System.out.println(src);
-
-                if(StringUtils.isNotBlank(name) && StringUtils.isNotBlank(src)){
-
-                    System.out.println("可以执行爬虫");
-                    System.out.println("----------------------------------------------------------------------------");
-
-                    String newFileName = name + ".jpg";
-                    OutputStream os = new FileOutputStream(file.getPath() + "\\" + newFileName);
-
-                    URL url = new URL(src);
-                    URLConnection con = url.openConnection();
-                    InputStream is = con.getInputStream();
-
-                    int len;
-                    byte[] bs = new byte[1024];
-                    while ((len = is.read(bs)) != -1) {
-                        os.write(bs, 0, len);
-                    }
-                    os.close();
-                    is.close();
-                }
-
+        for (WebElement a : elements){
+            String img = a.findElement(By.cssSelector("div.p-img> a > img")).getAttribute("data-lazy-img");
+            String bookName = a.findElement(By.cssSelector("div.p-name > a > em")).getText();
+            Random ran = new Random();
+            if (bookName.contains("/")){
+                bookName = ran.nextInt(1000) + "";
             }
+
+            String newFileName = bookName + ".jpg";
+            OutputStream os = new FileOutputStream(file.getPath() + "\\" + newFileName);
+
+            URL url = new URL(img);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+
+            int len;
+            byte[] bs = new byte[1024];
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+            os.close();
+            is.close();
         }
     }
 
