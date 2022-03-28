@@ -5,12 +5,12 @@
     <!--    指定某个或某些单元测试类运行-->
     <test verbose="10" preserve-order="true" name="threadTest163">
         <classes>
-            <class name="controller.email163" />
+            <class name="selenium.email163" />
         </classes>
     </test>
     <test verbose="10" preserve-order="true" name="threadTestTencen">
         <classes>
-            <class name="controller.tenCenOperation" />
+            <class name="selenium.tenCenOperation" />
         </classes>
     </test>
 

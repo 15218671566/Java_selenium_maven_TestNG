@@ -1,4 +1,4 @@
-package controller;
+package selenium;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
