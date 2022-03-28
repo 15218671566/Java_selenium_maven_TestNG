@@ -5,38 +5,28 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class Tencen {
+public class tenCenOperation {
     autopulic au = new autopulic();
     //打印日志
-    private static Logger logger = Logger.getLogger(email163.class);
+    private static Logger logger = Logger.getLogger(tenCenOperation.class);
     //新建驱动并屏蔽浏览器通知
     WebDriver driver = au.enableChrome2();
     //显示等待20秒
     WebDriverWait wait = new WebDriverWait(driver, 20);
-    Actions actions = new Actions(driver);
-    Random random = new Random();
     //执行js代码
     JavascriptExecutor js = (JavascriptExecutor)driver;
 
 
-
-
-
     //登录网站
     @BeforeClass
-    public void login163() {
+    public void openTenCen() {
         System.setProperty("webserver.chrome.driver", "\\src\\chromedriver.exe");
 
         driver.get("https://www.baidu.com/");
@@ -49,7 +39,7 @@ public class Tencen {
 
     //退出驱动
     @AfterClass
-    public void quitChrome() {
+    public void quitTenCen() {
         driver.quit();
     }
 
@@ -68,8 +58,8 @@ public class Tencen {
         driver.findElement(By.partialLinkText("-综合性在线终身学习平台")).click();
 
         au.switchLastHandle(driver);
-        String tencen = driver.getWindowHandle();
-        System.out.println("腾讯句柄："+tencen);
+        String tencenHandle = driver.getWindowHandle();
+        System.out.println("腾讯句柄："+tencenHandle);
 
         driver.findElement(By.id("js_login")).click();
 
@@ -79,14 +69,23 @@ public class Tencen {
 
         WebElement u = driver.findElement(By.id("u"));
         u.click();
-        u.sendKeys("1259375229");
+        u.sendKeys("腾讯课堂账号");
 
         WebElement p = driver.findElement(By.id("p"));
         p.click();
-        p.sendKeys("asd5325608");
+        p.sendKeys("腾讯课堂密码");
 
         driver.findElement(By.id("login_button")).click();
         driver.switchTo().defaultContent();
         System.out.println("登录成功");
+    }
+
+    @Test(priority = 2,description = "搜索Java自动化测试")
+    public void search(){
+        WebElement js_keyword = driver.findElement(By.id("js_keyword"));
+        js_keyword.click();
+        js_keyword.sendKeys("Java自动化测试");
+
+        driver.findElement(By.cssSelector("i.icon-font.i-search-bold")).click();
     }
 }
