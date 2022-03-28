@@ -29,28 +29,38 @@ public class email163 {
 
     //登录网站
     @BeforeClass
-    public void login163() {
+    public void openEmail() {
         System.setProperty("webserver.chrome.driver", "\\src\\chromedriver.exe");
 
         driver.get("https://mail.163.com/");
         driver.manage().deleteAllCookies();
-
         driver.manage().window().maximize();
 
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        au.login(driver);
-        logger.info("登录操作已完成---------------------");
     }
 
     //退出驱动
     @AfterClass
-    public void quitChrome() {
+    public void quitEmail() {
         driver.quit();
     }
 
-    @Test(priority = 1, description = "删除草稿箱邮件", enabled = true)
-    public void delete1() {
+    @Test(priority = 1, description = "登录163邮箱", enabled = true)
+    public void login163(){
+        driver.switchTo().frame(driver.findElement(By.xpath("/html/body/div[2]/div[3]/div[1]/div/div[4]/div[1]/div[1]/iframe")));
+        driver.findElement(By.name("email")).clear();
+        driver.findElement(By.name("email")).sendKeys("163邮箱账号");
+
+        driver.findElement(By.name("password")).clear();
+        driver.findElement(By.name("password")).sendKeys("163邮箱密码");
+
+        driver.findElement(By.id("dologin")).click();
+        logger.info("登录操作已完成---------------------");
+
+    }
+
+    @Test(priority = 2, description = "删除草稿箱邮件", enabled = true)
+    public void deleteDraft() {
         //尝试点击
         au.getElementClick(wait,By.cssSelector("ul.js-component-tree.nui-tree > li:nth-child(6) > div"),js);
         //定位邮件
@@ -65,8 +75,8 @@ public class email163 {
         logger.info("草稿箱删除操作完成---------------------------");
     }
 
-    @Test(priority = 2, description = "存草稿箱操作", enabled = true)
-    public void save() {
+    @Test(priority = 3, description = "存草稿箱操作", enabled = true)
+    public void saveDraft() {
 
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
 
@@ -82,8 +92,8 @@ public class email163 {
         logger.info("邮件存草稿操作已完成------------------------------");
     }
 
-    @Test(priority = 3, description = "删除已发送邮件", enabled = true)
-    public void delete2() {
+    @Test(priority = 4, description = "删除已发送邮件", enabled = true)
+    public void deleteSendEmail() {
         driver.navigate().refresh();
 
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
@@ -104,8 +114,8 @@ public class email163 {
 
     }
 
-    @Test(priority = 4, description = "发送邮件", enabled = true)
-    public void send() {
+    @Test(priority = 5, description = "发送邮件", enabled = true)
+    public void sendEmail() {
         driver.findElement(By.id("_mail_tabitem_0_133")).click();
         au.mail(wait,js);
         driver.findElement(By.cssSelector("footer.jp0 > div:first-child > span.nui-btn-text")).click();
@@ -113,16 +123,10 @@ public class email163 {
         logger.info("发送邮件操作已完成------------------------------");
     }
 
-    @Test(priority = 9, description = "退出163账号",enabled = true)
-    public void quit163() {
-        driver.navigate().refresh();
-        driver.findElement(By.id("spnUid")).click();
-        driver.findElement(By.id("_mail_component_78_78")).click();
 
-    }
 
-    @Test(priority = 5, description = "新增联系人(不加分组)")
-    public void addName1() {
+    @Test(priority = 6, description = "新增联系人(不加分组)")
+    public void addNotGroupName() {
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
 
         By by = By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text");
@@ -155,7 +159,7 @@ public class email163 {
 
     }
 
-    @Test(priority = 6, description = "新增分组")
+    @Test(priority = 7, description = "新增分组")
     public void addGroup() {
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
         driver.navigate().refresh();
@@ -181,8 +185,8 @@ public class email163 {
         elements.get(elements.size() - 1).click();
     }
 
-    @Test(priority = 7, description = "新增联系人(需加分组)")
-    public void addName2() {
+    @Test(priority = 8, description = "新增联系人(需加分组)")
+    public void addGroupName() {
         //尝试点击
         au.getElementClick(wait,By.id("_mail_tabitem_1_134"),js);
         //wait.until(ExpectedConditions.elementToBeClickable(By.id("_mail_tabitem_1_134"))).click();
@@ -221,7 +225,7 @@ public class email163 {
         driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn > span.nui-btn-text")).click();
     }
 
-    @Test(priority = 8,description = "删除第一个联系人",enabled = true)
+    @Test(priority = 9,description = "删除第一个联系人",enabled = true)
     public void deleteName(){
         //定位通讯录
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
@@ -236,7 +240,7 @@ public class email163 {
 
     }
 
-    @Test(priority = 8,description = "删除第一个分组",enabled = true)
+    @Test(priority = 10,description = "删除第一个分组",enabled = true)
     public void deleteGroup(){
 
         //定位通讯录
@@ -253,5 +257,13 @@ public class email163 {
         driver.findElement(By.cssSelector("div.nui-toolbar-item > div.js-component-component  > div:nth-child(2)")).click();
         driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
         logger.info("删除分组操作已完成");
+    }
+
+    @Test(priority = 11, description = "退出163账号",enabled = true)
+    public void quit163() {
+        driver.navigate().refresh();
+        driver.findElement(By.id("spnUid")).click();
+        driver.findElement(By.id("_mail_component_78_78")).click();
+
     }
 }

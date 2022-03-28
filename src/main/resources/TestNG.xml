@@ -10,12 +10,17 @@
     </test>
     <test verbose="10" preserve-order="true" name="threadTestTencen">
         <classes>
-            <class name="controller.Tencen" />
+            <class name="controller.tenCenOperation" />
         </classes>
     </test>
 
-    <!--    html监听，这里指向监听器的包路径,并生成测试报告-->
+
     <listeners>
+        <!--    html监听，这里指向监听器的包路径,并生成测试报告-->
         <listener class-name="listener.TestReportListener"/>
+        <!--失败重试监听器-->
+        <listener class-name="Listener.RetryListener"/>
+        <!--用例执行结果监听-->
+        <listener class-name="Listener.TestNGListener"/>
     </listeners>
 </suite>
