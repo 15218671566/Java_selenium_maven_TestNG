@@ -1,5 +1,6 @@
 package selenium;
 
+import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -45,14 +46,14 @@ public class email163 {
         driver.quit();
     }
 
-    @Test(priority = 1, description = "登录163邮箱", enabled = true)
-    public void login163(){
+    @Test(priority = 1, description = "登录163邮箱", dataProvider = "providerLogin",dataProviderClass = variableProvider.class,enabled = true)
+    public void login163(String account, String password){
         driver.switchTo().frame(driver.findElement(By.xpath("/html/body/div[2]/div[3]/div[1]/div/div[4]/div[1]/div[1]/iframe")));
         driver.findElement(By.name("email")).clear();
-        driver.findElement(By.name("email")).sendKeys("163邮箱账号");
+        driver.findElement(By.name("email")).sendKeys(account);
 
         driver.findElement(By.name("password")).clear();
-        driver.findElement(By.name("password")).sendKeys("163邮箱密码");
+        driver.findElement(By.name("password")).sendKeys(password);
 
         driver.findElement(By.id("dologin")).click();
         logger.info("登录操作已完成---------------------");
@@ -125,8 +126,8 @@ public class email163 {
 
 
 
-    @Test(priority = 6, description = "新增联系人(不加分组)")
-    public void addNotGroupName() {
+    @Test(priority = 6, description = "新增联系人(不加分组)",dataProvider = "provideData",dataProviderClass = variableProvider.class)
+    public void addNoGroupName(String addNoGroupName) {
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
 
         By by = By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text");
@@ -139,7 +140,8 @@ public class email163 {
         //姓名
         WebElement name = driver.findElement(By.id("input_N"));
         name.clear();
-        name.sendKeys("姓名"+random.nextInt(100));
+        //name.sendKeys("姓名"+random.nextInt(100));
+        name.sendKeys(addNoGroupName);
 
         //电子邮箱
         List<WebElement> elements = driver.findElements(By.cssSelector("dl.ou0 > dd.is0 > div.js-component-input.nui-ipt > input.nui-ipt-input"));
@@ -159,8 +161,8 @@ public class email163 {
 
     }
 
-    @Test(priority = 7, description = "新增分组")
-    public void addGroup() {
+    @Test(priority = 7, description = "新增分组",dataProvider = "provideData",dataProviderClass = variableProvider.class)
+    public void addGroup(String addGroup) {
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
         driver.navigate().refresh();
         //点击新建联系人
@@ -174,7 +176,8 @@ public class email163 {
 
         //输入分组名称
         List<WebElement> elements1 = driver.findElements(By.cssSelector("div.js-component-input.nui-ipt > input.nui-ipt-input"));
-        elements1.get(elements1.size() - 1).sendKeys("Liujx" + random.nextInt(100));
+        //elements1.get(elements1.size() - 1).sendKeys("Liujx" + random.nextInt(100));
+        elements1.get(elements1.size() - 1).sendKeys(addGroup);
 
         //保存分组
         driver.findElements(By.cssSelector("div.cW0 > div.js-component-button.nui-btn > span.nui-btn-text")).get(0).click();

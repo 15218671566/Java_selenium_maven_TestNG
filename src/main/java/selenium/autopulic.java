@@ -72,20 +72,14 @@ public class autopulic {
             WebElement element = wait.until(new ExpectedCondition<WebElement>() {
                 @NullableDecl
                 @Override
-                public WebElement apply(@NullableDecl WebDriver webDriver) {
-                    //是否加载成功
-                    wait.until(ExpectedConditions.presenceOfElementLocated(by));
-                    //是否显示
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-                    //是否可点击
-                    wait.until(ExpectedConditions.elementToBeClickable(by));
-
+                public WebElement apply( WebDriver webDriver) {
                     return webDriver.findElement(by);
                 }
             });
             element.click();
             System.out.println("apply点击成功");
         }catch (Exception e){
+            screenImg(driver);
             System.out.println("异常："+e);
             js.executeScript("arguments[0].click()",driver.findElement(by));
             System.out.println("apply点击失败，采用js点击："+driver.findElement(by));
