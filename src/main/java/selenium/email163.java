@@ -21,7 +21,7 @@ public class email163 {
     WebDriver driver = au.enableChrome2();
 
     //显示等待20秒
-    WebDriverWait wait = new WebDriverWait(driver, 20);
+    WebDriverWait wait = new WebDriverWait(driver, 10);
     Actions actions = new Actions(driver);
     Random random = new Random();
     //执行js代码
@@ -37,7 +37,7 @@ public class email163 {
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
 
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 
     //退出驱动
@@ -124,6 +124,24 @@ public class email163 {
         logger.info("发送邮件操作已完成------------------------------");
     }
 
+    @Test(priority = 12, description = "进行彻底删除邮件", enabled = false)
+    public void deleteUselessEmail(){
+        driver.findElement(By.cssSelector("li.js-component-tabitem.tA0.oZ0.nui-tabs-item.qv0")).click();
+        driver.findElement(By.cssSelector("ul.js-component-tree.nui-tree > li.js-component-tree.nui-tree-item.nui-tree-item-isFold:nth-child(12) > div.js-component-component.nui-tree-item-label")).click();
+        List<WebElement> alreadyDelete = driver.findElements(By.cssSelector("ul.js-component-tree.nui-tree > li.js-component-tree.nui-tree-item.nui-tree-item-isUnfold > ul.nui-tree > li:nth-child(5) > div"));
+        if (alreadyDelete.size() == 0){
+            au.getElementClick(wait,By.linkText("其他3个文件夹"),js);
+        }
+        alreadyDelete.get(0).click();
+
+        List<WebElement> allUseless = driver.findElements(By.cssSelector("div.rF0.nui-txt-flag0 > div.nl0.hA0.ck0"));
+        WebElement useless1 = allUseless.get(0).findElement(By.cssSelector("div:nth-child(3) > b:nth-of-type(1)"));
+        actions.clickAndHold(useless1).perform();
+        useless1.click();
+        driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn ")).click();
+
+    }
+
 
 
     @Test(priority = 6, description = "新增联系人(不加分组)",dataProvider = "provideData",dataProviderClass = variableProvider.class)
@@ -192,7 +210,6 @@ public class email163 {
     public void addGroupName() {
         //尝试点击
         au.getElementClick(wait,By.id("_mail_tabitem_1_134"),js);
-        //wait.until(ExpectedConditions.elementToBeClickable(By.id("_mail_tabitem_1_134"))).click();
         driver.navigate().refresh();
         driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn.nui-btn-hasIcon.nui-mainBtn-hasIcon > span.nui-btn-text")).click();
 
@@ -228,22 +245,47 @@ public class email163 {
         driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn > span.nui-btn-text")).click();
     }
 
-    @Test(priority = 9,description = "删除第一个联系人",enabled = true)
+    @Test(priority = 9,description = "删除含分组联系人",enabled = true)
     public void deleteName(){
         //定位通讯录
         driver.findElement(By.id("_mail_tabitem_1_134")).click();
         //定位所有联系人
         driver.findElement(By.cssSelector("div.js-component-component.nui-tree-item-label.nui-tree-item-label-selected")).click();
 
-        //定位需要删除的联系人,然后删除
-        driver.findElement(By.cssSelector("tbody.nui-table-body > tr:nth-child(1) >td:nth-child(2) >span > span > b")).click();
+        //删除第一个联系人
+        /*driver.findElement(By.cssSelector("tbody.nui-table-body > tr:nth-child(1) >td:nth-child(2) >span > span > b")).click();
         driver.findElement(By.cssSelector("div.nui-toolbar-item:nth-child(2) > div.js-component-button.nui-btn:nth-child(3)")).click();
         driver.findElements(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn > span.nui-btn-text")).get(1).click();
-        logger.info("删除联系人操作已完成");
+        logger.info("删除联系人操作已完成");*/
 
+        List<WebElement> allEmails = driver.findElements(By.cssSelector("tbody.nui-table-body > tr.nui-table-row"));
+        for(WebElement element : allEmails){
+            List<WebElement> oneElement = element.findElements(By.cssSelector("td:nth-child(7) > nobr > div"));
+            if (oneElement.size() != 0){
+                element.findElement(By.cssSelector("td:nth-child(4) >span")).click();
+                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn.nui-btn-hasIcon")).click();
+                driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
+                break;
+            }
+        }
     }
 
-    @Test(priority = 10,description = "删除第一个分组",enabled = true)
+    @Test(priority = 10,description = "删除不含分组联系人",enabled = true)
+    public void deleteNoGroupName(){
+        driver.findElement(By.cssSelector("div.js-component-component.nui-tree-item-label.nui-tree-item-label-selected")).click();
+        List<WebElement> allEmails = driver.findElements(By.cssSelector("tbody.nui-table-body > tr.nui-table-row"));
+        for(WebElement element : allEmails){
+            List<WebElement> oneElement = element.findElements(By.cssSelector("td:nth-child(7) > nobr > div"));
+            if (oneElement.size() == 0){
+                element.findElement(By.cssSelector("td:nth-child(4) >span")).click();
+                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn.nui-btn-hasIcon")).click();
+                driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
+                break;
+            }
+        }
+    }
+
+    @Test(priority = 11,description = "删除第一个分组",enabled = true)
     public void deleteGroup(){
 
         //定位通讯录
@@ -262,7 +304,7 @@ public class email163 {
         logger.info("删除分组操作已完成");
     }
 
-    @Test(priority = 11, description = "退出163账号",enabled = true)
+    @Test(priority = 12, description = "退出163账号",enabled = true)
     public void quit163() {
         driver.navigate().refresh();
         driver.findElement(By.id("spnUid")).click();
