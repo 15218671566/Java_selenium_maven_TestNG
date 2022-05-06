@@ -52,7 +52,7 @@ public class jsoupJD {
     }
 
 
-    @Test(description = "下载JD图片到本地")
+    @Test(description = "下载JD链接图片到本地")
     public void downloadJava() throws Exception {
 
         File file = new File("e://JD爬虫");
