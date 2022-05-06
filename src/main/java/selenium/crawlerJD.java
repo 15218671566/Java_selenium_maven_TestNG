@@ -24,7 +24,7 @@ public class crawlerJD {
     //打印日志
     private static Logger logger = Logger.getLogger(crawlerJD.class);
 
-    WebDriver driver = au.enableChrome2();
+    WebDriver driver = au.disableChrome();
     //执行js代码
     JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -79,7 +79,7 @@ public class crawlerJD {
             String newFileName = bookName + ".jpg";
             OutputStream os = new FileOutputStream(file.getPath() + "\\" + newFileName);
 
-            URL url = new URL(img);
+            URL url = new URL("https:"+img);
             URLConnection con = url.openConnection();
             InputStream is = con.getInputStream();
 

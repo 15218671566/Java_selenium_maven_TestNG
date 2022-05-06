@@ -1,7 +1,7 @@
 package selenium;
 
-import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -18,7 +18,7 @@ public class email163 {
     //打印日志
     private static Logger logger = Logger.getLogger(email163.class);
 
-    WebDriver driver = au.enableChrome2();
+    WebDriver driver = au.disableChrome();
 
     //显示等待20秒
     WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -31,8 +31,6 @@ public class email163 {
     //登录网站
     @BeforeClass
     public void openEmail() {
-        System.setProperty("webserver.chrome.driver", "\\src\\chromedriver.exe");
-
         driver.get("https://mail.163.com/");
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
@@ -124,10 +122,10 @@ public class email163 {
         logger.info("发送邮件操作已完成------------------------------");
     }
 
-    @Test(priority = 12, description = "进行彻底删除邮件", enabled = false)
+    @Test(priority = 12, description = "进行彻底删除邮件", enabled = true,dependsOnMethods = {"sendEmail"})
     public void deleteUselessEmail(){
         driver.findElement(By.cssSelector("li.js-component-tabitem.tA0.oZ0.nui-tabs-item.qv0")).click();
-        driver.findElement(By.cssSelector("ul.js-component-tree.nui-tree > li.js-component-tree.nui-tree-item.nui-tree-item-isFold:nth-child(12) > div.js-component-component.nui-tree-item-label")).click();
+        driver.findElement(By.cssSelector("div.js-component-component.nui-tree-item-label > span.nui-tree-item-text > span#spnHideFolders")).click();
         List<WebElement> alreadyDelete = driver.findElements(By.cssSelector("ul.js-component-tree.nui-tree > li.js-component-tree.nui-tree-item.nui-tree-item-isUnfold > ul.nui-tree > li:nth-child(5) > div"));
         if (alreadyDelete.size() == 0){
             au.getElementClick(wait,By.linkText("其他3个文件夹"),js);
@@ -135,10 +133,10 @@ public class email163 {
         alreadyDelete.get(0).click();
 
         List<WebElement> allUseless = driver.findElements(By.cssSelector("div.rF0.nui-txt-flag0 > div.nl0.hA0.ck0"));
-        WebElement useless1 = allUseless.get(0).findElement(By.cssSelector("div:nth-child(3) > b:nth-of-type(1)"));
+        WebElement useless1 = allUseless.get(allUseless.size() - 1).findElement(By.cssSelector("div:nth-child(3) > b:nth-of-type(1)"));
         actions.clickAndHold(useless1).perform();
         useless1.click();
-        driver.findElement(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn ")).click();
+        driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
 
     }
 
@@ -252,18 +250,20 @@ public class email163 {
         //定位所有联系人
         driver.findElement(By.cssSelector("div.js-component-component.nui-tree-item-label.nui-tree-item-label-selected")).click();
 
+        /*
         //删除第一个联系人
-        /*driver.findElement(By.cssSelector("tbody.nui-table-body > tr:nth-child(1) >td:nth-child(2) >span > span > b")).click();
+        driver.findElement(By.cssSelector("tbody.nui-table-body > tr:nth-child(1) >td:nth-child(2) >span > span > b")).click();
         driver.findElement(By.cssSelector("div.nui-toolbar-item:nth-child(2) > div.js-component-button.nui-btn:nth-child(3)")).click();
         driver.findElements(By.cssSelector("div.js-component-button.nui-mainBtn.nui-btn > span.nui-btn-text")).get(1).click();
-        logger.info("删除联系人操作已完成");*/
+        logger.info("删除联系人操作已完成");
+*/
 
         List<WebElement> allEmails = driver.findElements(By.cssSelector("tbody.nui-table-body > tr.nui-table-row"));
         for(WebElement element : allEmails){
             List<WebElement> oneElement = element.findElements(By.cssSelector("td:nth-child(7) > nobr > div"));
             if (oneElement.size() != 0){
                 element.findElement(By.cssSelector("td:nth-child(4) >span")).click();
-                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn.nui-btn-hasIcon")).click();
+                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn > span.nui-btn-text")).click();
                 driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
                 break;
             }
@@ -278,7 +278,7 @@ public class email163 {
             List<WebElement> oneElement = element.findElements(By.cssSelector("td:nth-child(7) > nobr > div"));
             if (oneElement.size() == 0){
                 element.findElement(By.cssSelector("td:nth-child(4) >span")).click();
-                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn.nui-btn-hasIcon")).click();
+                driver.findElement(By.cssSelector("div.fR0 > div.js-component-button.nui-btn > span.nui-btn-text")).click();
                 driver.findElement(By.cssSelector("div.nui-msgbox-ft-btns > div.js-component-button.nui-mainBtn.nui-btn")).click();
                 break;
             }
@@ -304,7 +304,7 @@ public class email163 {
         logger.info("删除分组操作已完成");
     }
 
-    @Test(priority = 12, description = "退出163账号",enabled = true)
+    @Test(priority = 13, description = "退出163账号",enabled = true)
     public void quit163() {
         driver.navigate().refresh();
         driver.findElement(By.id("spnUid")).click();

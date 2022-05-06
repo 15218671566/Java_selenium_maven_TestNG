@@ -1,5 +1,10 @@
 package selenium;
 
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,11 +22,11 @@ public class tenCenOperation {
     //打印日志
     private static Logger logger = Logger.getLogger(tenCenOperation.class);
     //新建驱动并屏蔽浏览器通知
-    WebDriver driver = au.enableChrome2();
+    WebDriver driver = au.disableChrome();
     //显示等待20秒
     WebDriverWait wait = new WebDriverWait(driver, 20);
     //执行js代码
-    JavascriptExecutor js = (JavascriptExecutor)driver;
+    JavascriptExecutor js = (JavascriptExecutor) driver;
 
 
     //登录网站
@@ -30,7 +35,7 @@ public class tenCenOperation {
         System.setProperty("webserver.chrome.driver", "\\src\\chromedriver.exe");
 
         driver.get("https://www.baidu.com/");
-        driver.manage().deleteAllCookies();
+        //driver.manage().deleteAllCookies();
 
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -43,8 +48,8 @@ public class tenCenOperation {
         driver.quit();
     }
 
-    @Test(priority = 1,description = "进入腾讯课堂",enabled = true)
-    public void intoTencen(){
+    @Test(priority = 1, description = "进入腾讯课堂", enabled = true)
+    public void intoTencen() {
         //百度句柄
         String baiduHandle = driver.getWindowHandle();
 
@@ -54,12 +59,12 @@ public class tenCenOperation {
 
         driver.findElement(By.id("su")).click();
 
-        System.out.println("百度句柄："+baiduHandle);
+        System.out.println("百度句柄：" + baiduHandle);
         driver.findElement(By.partialLinkText("-综合性在线终身学习平台")).click();
 
         au.switchLastHandle(driver);
         String tencenHandle = driver.getWindowHandle();
-        System.out.println("腾讯句柄："+tencenHandle);
+        System.out.println("腾讯句柄：" + tencenHandle);
 
         driver.findElement(By.id("js_login")).click();
 
@@ -69,19 +74,19 @@ public class tenCenOperation {
 
         WebElement u = driver.findElement(By.id("u"));
         u.click();
-        u.sendKeys("腾讯课堂账号");
+        u.sendKeys("账号");
 
         WebElement p = driver.findElement(By.id("p"));
         p.click();
-        p.sendKeys("腾讯课堂密码");
+        p.sendKeys("密码");
 
         driver.findElement(By.id("login_button")).click();
         driver.switchTo().defaultContent();
         System.out.println("登录成功");
     }
 
-    @Test(priority = 2,description = "搜索Java自动化测试")
-    public void search(){
+    @Test(priority = 2, description = "搜索Java自动化测试")
+    public void search() {
         WebElement js_keyword = driver.findElement(By.id("js_keyword"));
         js_keyword.click();
         js_keyword.sendKeys("Java自动化测试");

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class XssfSheet {
     @Test(description = "比较excel内两个sheet不一致的数据")
-    public void contrast() throws IOException {
+    public void contrastExcel() throws IOException {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream("E:\\JD爬虫\\1648477684343.xlsx"));
         XSSFSheet sheet1 = xssfWorkbook.getSheetAt(0);
         XSSFSheet sheet2 = xssfWorkbook.getSheetAt(1);
@@ -20,29 +20,29 @@ public class XssfSheet {
         XSSFSheet sheet3 = xssfWorkbook1.createSheet("sheet3");
         XSSFRow row;
         XSSFCell cell;
-        List list = new ArrayList();
+        ArrayList<String> onlyIdList = new ArrayList<>();
 
         int lastRowNum = sheet2.getLastRowNum()+1;
         int lastCellNum = sheet2.getRow(0).getLastCellNum();
         for (int i = 0; i < lastRowNum; i++) {
-            list.add(sheet2.getRow(i).getCell(0).toString());
+            onlyIdList.add(sheet2.getRow(i).getCell(0).toString());
         }
         String id;
         for (int rowId = 0; rowId < lastRowNum; rowId++) {
 
-            List list1 = new ArrayList<>();
-            List list2 = new ArrayList<>();
+            ArrayList<String> sheet1List = new ArrayList<>();
+            ArrayList<String> sheet2List = new ArrayList<>();
             row = sheet3.createRow(rowId);
 
             for (int cellId = 0; cellId < lastCellNum; cellId++) {
                 cell = row.createCell(cellId);
 
                 id = sheet1.getRow(rowId).getCell(0).toString();
-                boolean contains = list.contains(id);
+                boolean flag = onlyIdList.contains(id);
                 //System.out.println("布尔值：" + contains);
-                if (contains == true) {
-                    list1.add(sheet1.getRow(rowId).getCell(cellId).toString());
-                    list2.add(sheet2.getRow(rowId).getCell(cellId).toString());
+                if (flag) {
+                    sheet1List.add(sheet1.getRow(rowId).getCell(cellId).toString());
+                    sheet2List.add(sheet2.getRow(rowId).getCell(cellId).toString());
                 }else {
                     //写入sheet3
                     //System.out.println("============不相等");
@@ -50,13 +50,11 @@ public class XssfSheet {
                 }
             }
             for (int cellId1 = 0; cellId1 < lastCellNum; cellId1++) {
-                if (!list1.equals(list2)){
+                if (!sheet1List.equals(sheet2List)){
                     cell = row.createCell(cellId1);
-                    cell.setCellValue(list1.get(cellId1).toString());
+                    cell.setCellValue(sheet1List.get(cellId1));
                 }
             }
-            list1.clear();
-            list2.clear();
         }
         FileOutputStream fileOutputStream = new FileOutputStream(new File("E:\\JD爬虫\\Liujx写入数据.xlsx"));
         xssfWorkbook1.write(fileOutputStream);
@@ -69,8 +67,8 @@ public class XssfSheet {
     public void saveImg() throws IOException {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream("E:\\JD爬虫\\Liujx_picture.xlsx"));
         XSSFSheet sheetAt = xssfWorkbook.getSheetAt(0);
-        List<XSSFPictureData> picList = new ArrayList();
-        List idList = new ArrayList();
+        List<XSSFPictureData> picList = new ArrayList<>();
+        ArrayList<String> idList = new ArrayList<>();
         List<XSSFShape> shapes = sheetAt.getDrawingPatriarch().getShapes();
         System.out.println("包含图片的行数为："+shapes.size());
         for (int i = 0 ; i < shapes.size(); i++){
@@ -107,7 +105,7 @@ public class XssfSheet {
         for (int a = 0; a < shapes.size(); a++){
             XSSFPictureData xssfPictureData = picList.get(a);
             byte[] data = xssfPictureData.getData();
-            out = new FileOutputStream("E:\\JD爬虫\\"+idList.get(a).toString()+ ".jpeg");
+            out = new FileOutputStream("E:\\JD爬虫\\"+idList.get(a)+ ".jpeg");
             out.write(data);
         }
     }

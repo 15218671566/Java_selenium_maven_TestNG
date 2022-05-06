@@ -32,11 +32,11 @@ public class autopulic {
     }
 
     //截取当前页面
-    public void screenImg(WebDriver driver){
+    public void screenImg(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss"); //转换时间格式
         String time = dateFormat.format(Calendar.getInstance().getTime());
         File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        File path = new File("d:\\截图"+time+".png");
+        File path = new File("E:\\JD爬虫\\"+time+".png");
         try {
             FileUtils.copyFile(file,path);
         } catch (IOException e) {
@@ -45,9 +45,10 @@ public class autopulic {
     }
 
 
-    //屏蔽chrome弹窗提醒
-    public WebDriver enableChrome2(){
-        Map<String, Object> prefs = new HashMap<String, Object>();
+    //chrome浏览器设置
+    public WebDriver disableChrome(){
+        //关闭浏览器弹窗
+        Map<String, Object> prefs = new HashMap<>();
         prefs.put("profile.default_content_setting_values.notifications", 2);
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
@@ -79,7 +80,7 @@ public class autopulic {
             element.click();
             System.out.println("apply点击成功");
         }catch (Exception e){
-            screenImg(driver);
+            //screenImg();
             System.out.println("异常："+e);
             js.executeScript("arguments[0].click()",driver.findElement(by));
             System.out.println("apply点击失败，采用js点击："+driver.findElement(by));
